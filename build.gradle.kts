@@ -20,11 +20,11 @@ dependencies {
     // Azure Functions Java Library
     implementation("com.microsoft.azure.functions:azure-functions-java-library:3.1.0")
 
-    // PostgreSQL JDBC Driver
-    implementation("org.postgresql:postgresql:42.7.4")
+    // SQL Server JDBC Driver
+    implementation("com.microsoft.sqlserver:mssql-jdbc:13.5.1.jre8-preview")
 
     // JSON support
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4")
 
     // Testing
     testImplementation(platform("org.junit:junit-bom:6.0.0"))

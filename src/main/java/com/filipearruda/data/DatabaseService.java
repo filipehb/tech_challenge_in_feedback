@@ -1,4 +1,4 @@
-package com.filipearruda;
+package com.filipearruda.data;
 
 import com.filipearruda.dto.FeedbackRequest;
 
@@ -21,9 +21,9 @@ public class DatabaseService {
 
     public DatabaseService() {
         this(
-                getEnv("DB_URL", getEnv("POSTGRES_URL", "jdbc:postgresql://localhost:5432/feedback_db")),
-                getEnv("DB_USER", getEnv("POSTGRES_USER", "postgres")),
-                getEnv("DB_PASSWORD", getEnv("POSTGRES_PASSWORD", "password"))
+                getEnv("DB_URL", getEnv("SQLSERVER_URL", getEnv("MSSQL_URL", "jdbc:sqlserver://localhost:1433;databaseName=feedback_db;encrypt=true;trustServerCertificate=true;"))),
+                getEnv("DB_USER", getEnv("SQLSERVER_USER", getEnv("MSSQL_USER", "sa"))),
+                getEnv("DB_PASSWORD", getEnv("SQLSERVER_PASSWORD", getEnv("MSSQL_PASSWORD", "password")))
         );
     }
 
@@ -31,6 +31,18 @@ public class DatabaseService {
         this.url = url;
         this.user = user;
         this.password = password;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     private static String getEnv(String key, String defaultValue) {
@@ -46,11 +58,12 @@ public class DatabaseService {
     }
 
     public void initDatabase() {
-        String createTableSql = "CREATE TABLE IF NOT EXISTS feedbacks (" +
-                "id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                "description TEXT NOT NULL, " +
+        String createTableSql = "IF OBJECT_ID(N'feedbacks', N'U') IS NULL " +
+                "CREATE TABLE feedbacks (" +
+                "id INT IDENTITY(1,1) PRIMARY KEY, " +
+                "description NVARCHAR(MAX) NOT NULL, " +
                 "rate INT NOT NULL, " +
-                "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                "created_at DATETIME2 DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 
         try (Connection conn = getConnection();

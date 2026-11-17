@@ -1,7 +1,9 @@
 package com.filipearruda;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.filipearruda.data.DatabaseService;
 import com.filipearruda.dto.FeedbackRequest;
+import com.filipearruda.request.FeedbackReceiver;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -95,7 +97,7 @@ class FeedbackReceiverTest {
         doNothing().when(mockDatabaseService).initDatabase();
         when(mockDatabaseService.saveFeedback(any(FeedbackRequest.class))).thenReturn(1);
 
-        String json = "{\"descricao\": \"Great food!\", \"nota\": 5}";
+        String json = "{\"descricao\": \"ótimo!\", \"nota\": 5}";
         HttpRequestMessage<Optional<String>> request = createMockRequest(HttpMethod.POST, json);
 
         HttpResponseMessage response = receiver.run(request, mockContext);
@@ -124,7 +126,7 @@ class FeedbackReceiverTest {
 
     @Test
     void testPostInvalidRating() {
-        String json = "{\"descricao\": \"Too high rating\", \"nota\": 11}";
+        String json = "{\"descricao\": \"Nota Acima do esperado\", \"nota\": 11}";
         HttpRequestMessage<Optional<String>> request = createMockRequest(HttpMethod.POST, json);
 
         HttpResponseMessage response = receiver.run(request, mockContext);
@@ -135,7 +137,7 @@ class FeedbackReceiverTest {
 
     @Test
     void testPostNegativeRating() {
-        String json = "{\"descricao\": \"Negative rating\", \"nota\": -1}";
+        String json = "{\"descricao\": \"Nota negativa\", \"nota\": -1}";
         HttpRequestMessage<Optional<String>> request = createMockRequest(HttpMethod.POST, json);
 
         HttpResponseMessage response = receiver.run(request, mockContext);
@@ -159,7 +161,7 @@ class FeedbackReceiverTest {
     void testDatabaseErrorReturns500() throws SQLException {
         doThrow(new SQLException("Connection refused")).when(mockDatabaseService).saveFeedback(any(FeedbackRequest.class));
 
-        String json = "{\"descricao\": \"Good\", \"nota\": 4}";
+        String json = "{\"descricao\": \"Bom\", \"nota\": 4}";
         HttpRequestMessage<Optional<String>> request = createMockRequest(HttpMethod.POST, json);
 
         HttpResponseMessage response = receiver.run(request, mockContext);

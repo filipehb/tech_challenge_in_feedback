@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
@@ -36,7 +36,7 @@ jobs:
           ./gradlew azureFunctionsPackage
       
       - name: Login to Azure
-        uses: azure/login@v2
+        uses: azure/login@v3
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F8A2D81D7C044FC58E1A4ED8B7A1C951 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C2B15201D93E4CBE877C48961CB3C0AE }}

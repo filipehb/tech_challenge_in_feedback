@@ -1,6 +1,7 @@
-package com.filipearruda;
+package com.filipearruda.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.filipearruda.data.DatabaseService;
 import com.filipearruda.dto.FeedbackRequest;
 import com.microsoft.azure.functions.*;
 import com.microsoft.azure.functions.annotation.*;

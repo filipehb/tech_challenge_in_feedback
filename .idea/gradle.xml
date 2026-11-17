@@ -8,6 +8,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/notificar-urgencia" />
+            <option value="$PROJECT_DIR$/receber-avaliacao" />
+            <option value="$PROJECT_DIR$/relatorio-semanal" />
           </set>
         </option>
         <option name="myGradleHome" value="" />

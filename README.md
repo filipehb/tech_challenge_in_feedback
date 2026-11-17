@@ -65,3 +65,6 @@ O timer usa o fuso `E. South America Standard Time`, configurado em `WEBSITE_TIM
 ## Monitoramento
 
 O componente `ReceberAvaliacao` em Application Insights recebe a telemetria das três apps, porque todas usam a mesma `APPLICATIONINSIGHTS_CONNECTION_STRING`.
+
+## Testando
+A coleção do insomina está na pasta tech_challenge_in_feedback/insonmina

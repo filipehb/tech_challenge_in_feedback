@@ -1,54 +1,47 @@
 plugins {
-    id("java")
-    id("com.microsoft.azure.azurefunctions") version "1.14.0"
+    id("com.microsoft.azure.azurefunctions") version "1.14.0" apply false
 }
 
-group = "com.filipearruda"
-version = "1.0-SNAPSHOT"
+allprojects {
+    group = "com.filipearruda"
+    version = "1.0-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+    repositories {
+        mavenCentral()
     }
 }
 
-repositories {
-    mavenCentral()
-}
+subprojects {
+    apply(plugin = "java")
 
-dependencies {
-    // Azure Functions Java Library
-    implementation("com.microsoft.azure.functions:azure-functions-java-library:3.1.0")
-
-    // SQL Server JDBC Driver
-    implementation("com.microsoft.sqlserver:mssql-jdbc:13.5.1.jre8-preview")
-
-    // JSON support
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4")
-
-    // Testing
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("org.mockito:mockito-core:5.14.2")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.14.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-azurefunctions {
-    resourceGroup = "ReceberAvaliacao_group"
-    appName = "ReceberAvaliacao"
-    pricingTier = "Consumption"
-    region = "brazilsouth"
-    runtime = com.microsoft.azure.gradle.configuration.GradleRuntimeConfig().apply {
-        os("Linux")
-        javaVersion("Java 21")
+    extensions.configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
     }
-    auth = com.microsoft.azure.gradle.auth.GradleAuthConfig().apply {
-        type = "azure_cli"
+
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.add("-parameters")
+        options.encoding = "UTF-8"
     }
-    localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        "testImplementation"(platform("org.junit:junit-bom:6.0.0"))
+        "testImplementation"("org.junit.jupiter:junit-jupiter")
+        "testImplementation"("org.mockito:mockito-core:5.14.2")
+        "testImplementation"("org.mockito:mockito-junit-jupiter:5.14.2")
+        "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    }
+}
+
+tasks.register("azureFunctionsPackage") {
+    dependsOn(
+        ":receber-avaliacao:azureFunctionsPackage",
+        ":notificar-urgencia:azureFunctionsPackage",
+        ":relatorio-semanal:azureFunctionsPackage"
+    )
 }

@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "java",
+    "DB_URL": "jdbc:sqlserver://localhost:1433;databaseName=feedback_db;encrypt=true;trustServerCertificate=true;",
+    "DB_USER": "sa",
+    "DB_PASSWORD": "<senha>",
+    "ADMIN_EMAIL": "admin@example.com",
+    "AZURE_COMMUNICATION_CONNECTION_STRING": "<connection-string>",
+    "ACS_SENDER_ADDRESS": "DoNotReply@<dominio>.azurecomm.net",
+    "WEBSITE_TIME_ZONE": "E. South America Standard Time"
+  }
+}
